@@ -2,9 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import { registerValidator } from './validations/auth.js';
+import { loginValidator, postCreateValidator, registerValidator } from './validations.js';
 import checkAuth from './utils/checkAuth.js';
 import { getMe, login, register } from './controllers/UserController.js';
+import { create, getALl, getOne, remove, update } from './controllers/PostController.js';
 
 const app = express();
 dotenv.config();
@@ -25,11 +26,19 @@ mongoose
   .then(() => console.log('DB is OK!'))
   .catch((err) => console.log('DB connection ERROR:', err));
 
+// * Routes
+
 app.post('/auth/register', registerValidator, register);
-
-app.post('/auth/login', login);
-
+app.post('/auth/login', loginValidator, login);
 app.get('/auth/me', checkAuth, getMe);
+
+app.get('/posts/:id', getOne);
+app.get('/posts', getALl);
+app.post('/posts', checkAuth, postCreateValidator, create);
+app.patch('/posts/:id', checkAuth, registerValidator, update);
+app.delete('/posts/:id', checkAuth, remove);
+
+
 
 // * *************************** Server Connection ********************************   //
 app.listen(PORT, (err) => {
