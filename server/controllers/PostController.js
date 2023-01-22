@@ -3,10 +3,6 @@ import { validationResult } from 'express-validator';
 
 export const create = async (req, res) => {
   try {
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      return res.status(400).json(validationErrors.array());
-    }
     const doc = new PostModel({
       title: req.body.title,
       text: req.body.text,

@@ -48,10 +48,7 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   try {
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      return res.status(400).json(validationErrors.array());
-    }
+   
 
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
